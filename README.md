@@ -145,6 +145,7 @@ User Browser
 
 Private Namespace:
 three-tier.local
+---
 ## 🐳 Docker
 
 The project contains three Dockerized components.
@@ -458,45 +459,66 @@ This project provided practical experience with:
 - Understanding communication between different application tiers.
 
 ---
-## 🏁 Final Architecture
+
+
+## 📊 Final Architecture
 
 The final application architecture consists of three independent application tiers running as ECS Fargate services.
 
 ```text
-Internet
-    |
-    v
-Application Load Balancer :80
-    |
-    v
-ECS Fargate Frontend
-Nginx :80
-    |
-    | /api/*
-    | Cloud Map
-    v
-ECS Fargate Backend
-Node.js + Express :5000
-    |
-    | Cloud Map
-    v
-ECS Fargate MongoDB
-MongoDB :27017
-    |
-    v
-Amazon EFS
-Persistent Storage
+                         +-------------------+
+                         |       User        |
+                         |     Browser       |
+                         +---------+---------+
+                                   |
+                                   | HTTP :80
+                                   v
+                    +--------------------------+
+                    |  Application Load        |
+                    |       Balancer :80       |
+                    +------------+-------------+
+                                 |
+                                 v
+                    +--------------------------+
+                    |    ECS Fargate Frontend  |
+                    |         Nginx :80        |
+                    +------------+-------------+
+                                 |
+                                 | /api/*
+                                 | Cloud Map
+                                 v
+                    +--------------------------+
+                    |    ECS Fargate Backend   |
+                    |  Node.js + Express :5000 |
+                    +------------+-------------+
+                                 |
+                                 | Cloud Map
+                                 v
+                    +--------------------------+
+                    |    ECS Fargate MongoDB   |
+                    |         MongoDB :27017    |
+                    +--------------------------+
+                                 |
+                                 v
+                    +--------------------------+
+                    |      Amazon EFS          |
+                    |   Persistent DB Storage  |
+                    +--------------------------+
+```
 
-Private AWS Cloud Map namespace:
-three-tier.local
+### Service Discovery
 
-Service discovery:
-backend.three-tier.local
-mongodb.three-tier.local
+```text
+Private Cloud Map Namespace
+        |
+        +-- backend.three-tier.local:5000
+        |
+        +-- mongodb.three-tier.local:27017
+```
 
-This architecture separates the frontend, backend, and database tiers while allowing them to communicate through service discovery.
+This architecture keeps the frontend, backend, and database as separate ECS Fargate services while using Nginx and AWS Cloud Map for communication between the application tiers.
+
 ---
-
 ## 📌 Final Status
 
 The three-tier To-Do application has been successfully:
@@ -507,6 +529,8 @@ The three-tier To-Do application has been successfully:
 - Pushed to GitHub.
 - Docker images built and stored in Amazon ECR.
 - Deployed using Amazon ECS Fargate.
+
+---
 - Configured with AWS Cloud Map service discovery.
 - Configured with Nginx as a reverse proxy.
 - Configured with Amazon EFS for MongoDB persistent storage.
@@ -523,9 +547,14 @@ The complete project source code and deployment configuration are available on G
 
 ```text
 https://github.com/Shika-parachute/three-tier-ecs-application
+```
+
 ---
 
-🎉 Conclusion
+## 🎉 Conclusion
+
 This project demonstrates the complete deployment of a containerized three-tier application on AWS ECS Fargate.
+
 It combines Docker, Amazon ECR, ECS Fargate, Application Load Balancer, AWS Cloud Map, Nginx, MongoDB, Amazon EFS, GitHub Actions, and GitHub OIDC into a working cloud deployment.
+
 ---
