@@ -70,38 +70,38 @@ User / Browser
       |
       | HTTP :80
       v
-+----------------------+
-|   Application Load   |
-|      Balancer        |
-+----------+-----------+
-           |
-           v
-+----------------------+
-|  Frontend Container  |
-|       Nginx          |
-|       Port 80        |
-+----------+-----------+
-           |
-           | /api/*
-           | Reverse Proxy
-           v
-+----------------------+
-|  Backend Container   |
-| Node.js + Express    |
-|      Port 5000       |
-+----------+-----------+
-           |
-           | Cloud Map
-           | mongodb.three-tier.local
-           | :27017
-           v
-+----------------------+
-|  MongoDB Container   |
-|      Port 27017      |
-+----------------------+
++-------------------+
+| Application Load  |
+|     Balancer      |
++---------+---------+
+          |
+          v
++-------------------+
+| Frontend Container|
+|      Nginx        |
+|     Port 80       |
++---------+---------+
+          |
+          | /api/*
+          | Reverse Proxy
+          v
++-------------------+
+| Backend Container |
+|  Node.js+Express  |
+|     Port 5000     |
++---------+---------+
+          |
+          | Cloud Map
+          | mongodb.three-tier.local
+          | :27017
+          v
++-------------------+
+| MongoDB Container  |
+|     Port 27017     |
++-------------------+
+```
 
 ---
-
 
 ## ☁️ AWS Architecture
 
@@ -113,39 +113,37 @@ User Browser
     |
     | HTTP :80
     v
-+--------------------------+
-|   Application Load       |
-|       Balancer           |
-+------------+-------------+
-             |
-             v
-+--------------------------+
-|   ECS Fargate Frontend  |
-|       Nginx :80         |
-+------------+-------------+
-             |
-             | Cloud Map
-             | backend.three-tier.local
-             | :5000
-             v
-+--------------------------+
-|   ECS Fargate Backend   |
-|    Node.js / Express    |
-|        :5000            |
-+------------+-------------+
-             |
-             | Cloud Map
-             | mongodb.three-tier.local
-             | :27017
-             v
-+--------------------------+
-|   ECS Fargate MongoDB   |
-|        :27017           |
-+--------------------------+
++----------------------+
+| Application Load     |
+|      Balancer        |
++----------+-----------+
+           |
+           v
++----------------------+
+| ECS Fargate Frontend |
+|       Nginx :80      |
++----------+-----------+
+           |
+           | Cloud Map
+           | backend.three-tier.local
+           | :5000
+           v
++----------------------+
+| ECS Fargate Backend  |
+| Node.js / Express    |
+|       :5000          |
++----------+-----------+
+           |
+           | Cloud Map
+           | mongodb.three-tier.local
+           | :27017
+           v
++----------------------+
+| ECS Fargate MongoDB  |
+|       :27017         |
++----------------------+
+```
 
-Private Namespace:
-three-tier.local
----
 ## 🐳 Docker
 
 The project contains three Dockerized components.
@@ -197,8 +195,9 @@ three-tier-ecs-application/
 ├── docker-compose.yml
 ├── .gitignore
 └── README.md
+```
 
-
+---
 
 
 
