@@ -145,7 +145,6 @@ User Browser
 
 Private Namespace:
 three-tier.local
-
 ## 🐳 Docker
 
 The project contains three Dockerized components.
@@ -198,6 +197,11 @@ three-tier-ecs-application/
 ├── .gitignore
 └── README.md
 
+
+
+
+
+
 ## 🔌 Backend API
 
 The backend provides REST API endpoints for managing tasks.
@@ -211,7 +215,9 @@ Backend port:
 
 ```text
 5000
+MongoDB database:
 
+three_tier_db
 ## 🗺️ AWS Cloud Map
 
 The project uses a private AWS Cloud Map namespace:
