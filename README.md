@@ -215,44 +215,84 @@ Backend port:
 
 ```text
 5000
+```
+
 MongoDB database:
 
+```text
 three_tier_db
+```
+
+---
+
 ## 🗺️ AWS Cloud Map
 
 The project uses a private AWS Cloud Map namespace:
 
 ```text
 three-tier.local
+```
+
+Services registered in the namespace include:
+
+```text
+backend.three-tier.local
+mongodb.three-tier.local
+```
+
+This allows ECS services to communicate using service names even when task IP addresses change.
+
 ---
 
+
 ## 🚀 AWS Deployment
+
+The application is deployed on AWS using Amazon ECS Fargate.
 
 ### AWS Region
 
 ```text
 us-east-1
+```
 
+### ECS Cluster
+
+```text
 three-tier-cluster-new
+```
 
-ECS Services
+### ECS Services
+
 The application runs as three separate ECS Fargate services:
+
+```text
 three-tier-frontend-service-3
 three-tier-backend-service
 three-tier-mongodb-service-2
+```
 
-Amazon ECR Repositories
+### Amazon ECR Repositories
+
 Docker images are stored in Amazon ECR:
+
+```text
 three-tier-frontend
 three-tier-backend
 three-tier-mongodb
+```
 
-MongoDB Persistence
+### MongoDB Persistence
+
 MongoDB uses Amazon EFS for persistent storage so that database data can survive MongoDB container or task restarts.
 
-Application Load Balancer
-The frontend is exposed through an Application Load Balancer on HTTP port 80.
+### Application Load Balancer
+
+The frontend is exposed through an Application Load Balancer on HTTP port `80`.
+
 The ALB forwards incoming requests to the frontend Nginx container.
+
+---
+
 
 ## 🔐 Security
 
@@ -274,6 +314,9 @@ The IAM role used by GitHub Actions is:
 
 ```text
 GitHubActionsThreeTierDeploy
+```
+
+### Application Ports
 
 | Component | Port |
 |---|---:|
@@ -281,11 +324,14 @@ GitHubActionsThreeTierDeploy
 | Backend / Node.js | 5000 |
 | MongoDB | 27017 |
 
+---
 ## ⚙️ CI/CD Pipeline
 
 GitHub Actions is used to automate the application deployment process.
 
 The workflow is triggered whenever changes are pushed to the `main` branch.
+
+---
 
 ### Deployment Flow
 
@@ -311,13 +357,19 @@ Deploy Backend to ECS
 Deploy Frontend to ECS
     ↓
 Wait for ECS Services to become stable
+```
 
-Workflow File
+### Workflow File
+
 The GitHub Actions workflow is located at:
 
+```text
 .github/workflows/deploy.yml
+```
 
 The pipeline automatically builds and pushes the frontend and backend Docker images to Amazon ECR and triggers new ECS deployments.
+
+---
 
 ## 🧪 Testing
 
@@ -335,6 +387,8 @@ The following components were verified:
 - Data persistence.
 - Persistence after refreshing the frontend.
 
+---
+
 ### AWS Testing
 
 The deployed application was verified through the Application Load Balancer.
@@ -351,7 +405,6 @@ The following were checked:
 - GitHub Actions deployment workflow.
 
 ---
-
 ## 🛠️ Problems Solved
 
 During the implementation of the project, several practical deployment and infrastructure challenges were addressed.
@@ -364,6 +417,8 @@ The frontend, backend, and MongoDB components were separated into individual con
 
 AWS Cloud Map was configured to allow the frontend and backend services to communicate using service names instead of fixed task IP addresses.
 
+---
+
 ### Reverse Proxy
 
 Nginx was configured to serve the frontend and forward `/api/` requests to the backend service.
@@ -372,9 +427,12 @@ Nginx was configured to serve the frontend and forward `/api/` requests to the b
 
 Amazon EFS was configured for MongoDB so that database data can persist beyond individual ECS task restarts.
 
+---
 ### CI/CD Authentication
 
 GitHub Actions was configured with AWS IAM and GitHub OIDC so the deployment pipeline can authenticate with AWS without storing long-term AWS access keys.
+
+---
 
 ### ECS Deployment
 
@@ -437,6 +495,7 @@ backend.three-tier.local
 mongodb.three-tier.local
 
 This architecture separates the frontend, backend, and database tiers while allowing them to communicate through service discovery.
+---
 
 ## 📌 Final Status
 
@@ -464,7 +523,9 @@ The complete project source code and deployment configuration are available on G
 
 ```text
 https://github.com/Shika-parachute/three-tier-ecs-application
+---
 
 🎉 Conclusion
 This project demonstrates the complete deployment of a containerized three-tier application on AWS ECS Fargate.
 It combines Docker, Amazon ECR, ECS Fargate, Application Load Balancer, AWS Cloud Map, Nginx, MongoDB, Amazon EFS, GitHub Actions, and GitHub OIDC into a working cloud deployment.
+---
