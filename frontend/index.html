@@ -3,51 +3,417 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Three Tier App</title>
+
+  <title>Three-Tier To-Do</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      min-height: 100vh;
+      background: #0f172a;
+      color: #e2e8f0;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 0;
+    }
+
+    /* Header */
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 35px;
+      gap: 20px;
+    }
+
+    .brand h1 {
+      font-size: 30px;
+      color: #f8fafc;
+      margin-bottom: 8px;
+    }
+
+    .brand p {
+      color: #94a3b8;
+      font-size: 14px;
+    }
+
+    .status {
+      padding: 9px 15px;
+      border: 1px solid #334155;
+      border-radius: 20px;
+      color: #4ade80;
+      background: #111c2f;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    /* Add Task */
+
+    .add-card {
+      background: #111827;
+      border: 1px solid #1e293b;
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 30px;
+    }
+
+    .add-card h2 {
+      font-size: 17px;
+      margin-bottom: 15px;
+      color: #f1f5f9;
+    }
+
+    .input-row {
+      display: flex;
+      gap: 12px;
+    }
+
+    #taskInput {
+      flex: 1;
+      padding: 14px 16px;
+      border-radius: 10px;
+      border: 1px solid #334155;
+      background: #0f172a;
+      color: #f8fafc;
+      font-size: 15px;
+      outline: none;
+    }
+
+    #taskInput:focus {
+      border-color: #38bdf8;
+    }
+
+    #addButton {
+      border: none;
+      border-radius: 10px;
+      padding: 0 24px;
+      background: #2563eb;
+      color: white;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    #addButton:hover {
+      background: #1d4ed8;
+    }
+
+    /* Tasks */
+
+    .tasks-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .tasks-header h2 {
+      font-size: 20px;
+      color: #f8fafc;
+    }
+
+    #taskCount {
+      color: #94a3b8;
+      font-size: 14px;
+    }
+
+    #taskList {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .task {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: #111827;
+      border: 1px solid #1e293b;
+      border-radius: 12px;
+      padding: 17px 18px;
+    }
+
+    .task-icon {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #38bdf8;
+      flex-shrink: 0;
+    }
+
+    .task-title {
+      color: #e2e8f0;
+      font-size: 15px;
+      word-break: break-word;
+    }
+
+    .empty {
+      text-align: center;
+      padding: 40px 20px;
+      border: 1px dashed #334155;
+      border-radius: 12px;
+      color: #64748b;
+    }
+
+    /* Footer */
+
+    .footer {
+      margin-top: 35px;
+      padding-top: 20px;
+      border-top: 1px solid #1e293b;
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      color: #64748b;
+      font-size: 13px;
+    }
+
+    .footer span {
+      color: #94a3b8;
+    }
+
+    /* Mobile */
+
+    @media (max-width: 650px) {
+      .container {
+        width: 92%;
+        padding: 25px 0;
+      }
+
+      .header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .brand h1 {
+        font-size: 25px;
+      }
+
+      .input-row {
+        flex-direction: column;
+      }
+
+      #addButton {
+        padding: 13px;
+      }
+    }
+  </style>
 </head>
+
 <body>
-  <h1>Three Tier Task Application</h1>
 
-  <input id="taskInput" type="text" placeholder="Enter task">
-  <button onclick="addTask()">Add Task</button>
+  <div class="container">
 
-  <h2>Tasks</h2>
-  <ul id="taskList"></ul>
+    <header class="header">
+      <div class="brand">
+        <h1>✓ Three-Tier To-Do</h1>
+        <p>Simple task management powered by a containerized AWS application.</p>
+      </div>
+
+      <div class="status">
+        ● AWS Deployed
+      </div>
+    </header>
+
+
+    <section class="add-card">
+      <h2>Add a new task</h2>
+
+      <div class="input-row">
+        <input
+          id="taskInput"
+          type="text"
+          placeholder="What needs to be done?"
+          autocomplete="off"
+        >
+
+        <button id="addButton" onclick="addTask()">
+          Add Task
+        </button>
+      </div>
+    </section>
+
+
+    <section>
+      <div class="tasks-header">
+        <h2>My Tasks</h2>
+        <span id="taskCount">0 tasks</span>
+      </div>
+
+      <ul id="taskList"></ul>
+    </section>
+
+
+    <footer class="footer">
+      <span>Frontend · Nginx</span>
+      <span>•</span>
+      <span>Backend · Node.js</span>
+      <span>•</span>
+      <span>Database · MongoDB</span>
+    </footer>
+
+  </div>
+
 
   <script>
+
     async function loadTasks() {
-      const response = await fetch("/api/tasks");
-      const tasks = await response.json();
 
-      const list = document.getElementById("taskList");
-      list.innerHTML = "";
+      try {
 
-      tasks.forEach(task => {
-        const li = document.createElement("li");
-        li.textContent = task.title;
-        list.appendChild(li);
-      });
+        const response = await fetch("/api/tasks");
+
+        if (!response.ok) {
+          throw new Error("Failed to load tasks");
+        }
+
+        const tasks = await response.json();
+
+        const list = document.getElementById("taskList");
+        const count = document.getElementById("taskCount");
+
+        list.innerHTML = "";
+
+        count.textContent =
+          `${tasks.length} ${tasks.length === 1 ? "task" : "tasks"}`;
+
+
+        if (tasks.length === 0) {
+
+          const empty = document.createElement("li");
+
+          empty.className = "empty";
+
+          empty.textContent = "No tasks yet. Add your first task above.";
+
+          list.appendChild(empty);
+
+          return;
+        }
+
+
+        tasks.forEach(task => {
+
+          const li = document.createElement("li");
+
+          li.className = "task";
+
+          const icon = document.createElement("span");
+
+          icon.className = "task-icon";
+
+
+          const title = document.createElement("span");
+
+          title.className = "task-title";
+
+          title.textContent = task.title;
+
+
+          li.appendChild(icon);
+          li.appendChild(title);
+
+          list.appendChild(li);
+
+        });
+
+      } catch (error) {
+
+        console.error(error);
+
+        const list = document.getElementById("taskList");
+
+        list.innerHTML = "";
+
+        const errorMessage = document.createElement("li");
+
+        errorMessage.className = "empty";
+
+        errorMessage.textContent =
+          "Unable to connect to the backend service.";
+
+        list.appendChild(errorMessage);
+
+      }
     }
+
 
     async function addTask() {
+
       const input = document.getElementById("taskInput");
+
       const title = input.value.trim();
 
-      if (!title) return;
+      if (!title) {
+        input.focus();
+        return;
+      }
 
-      await fetch("/api/tasks", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ title })
-      });
 
-      input.value = "";
-      loadTasks();
+      try {
+
+        const response = await fetch("/api/tasks", {
+
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json"
+          },
+
+          body: JSON.stringify({
+            title: title
+          })
+
+        });
+
+
+        if (!response.ok) {
+          throw new Error("Failed to create task");
+        }
+
+
+        input.value = "";
+
+        await loadTasks();
+
+        input.focus();
+
+      } catch (error) {
+
+        console.error(error);
+
+        alert("Unable to add task. Please try again.");
+
+      }
     }
 
+
+    document
+      .getElementById("taskInput")
+      .addEventListener("keydown", function(event) {
+
+        if (event.key === "Enter") {
+          addTask();
+        }
+
+      });
+
+
     loadTasks();
+
   </script>
+
 </body>
 </html>
